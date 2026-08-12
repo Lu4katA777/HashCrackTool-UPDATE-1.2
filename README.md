@@ -1,78 +1,203 @@
-# Hashcrack tool [UPDATE 1.2] 
-🔐 Hash cracking &amp; password security lab tool built in Python. Educational project for cybersecurity, CTFs and authorized testing.
-HashCrackBG 🔐
+# HashCrackBG
 
-Educational hash cracking tool made in Bulgaria 🇧🇬Built for learning, lab testing and fun.
+Educational hash cracking tool made in Bulgaria.
+Built for learning, lab testing and fun.
 
-⚠️ This project is for educational purposes only.Do NOT use it for illegal activities.
+> This project is for educational purposes only.
+> Do NOT use it for illegal activities.
 
-Version 1.2
+---
 
-What's new
+## Version 1.2
 
-Brute-force cracking mode
+### What's new
 
-3 built-in wordlists:
+- Brute-force cracking mode
+- 3 built-in wordlists:
+  - `low.txt`
+  - `medium.txt`
+  - `high.txt`
+- New `-h` help command
+- Improved CLI interface
+- Improved password mutation system
+- Progress and speed statistics
+- Automatic saving of found passwords
 
-low.txt
+---
 
-medium.txt
+## Features
 
-high.txt
+- Hash generator (MD5, SHA1, SHA256 etc.)
+- Wordlist cracking
+- Smart mutations:
+  - case variations
+  - numbers (123456, 2025 etc.)
+  - symbols (! @ #)
+  - leet (@ 1 0)
+  - mixed case variations
+  - number interleaving
+- Brute-force mode
+- Speed display (hashes/sec)
+- Progress stats
+- Auto-save found passwords → `found.txt`
+- Color terminal UI
 
-New -h help command
+---
 
-Improved CLI interface
+Install dependency:
 
-Improved password mutation system
+```bash
+pip3 install colorama
+```
 
-Progress and speed statistics
+---
 
-Automatic saving of found passwords
+## Help
 
-Features
+To see all available commands:
 
-Hash generator
+```bash
+python3 HashCrackBG.py -h
+```
 
-Supported hash algorithms such as:
+Available commands:
 
-MD5
+```text
+generate    Generate a hash
+crack       Crack hash using a wordlist
+brute       Brute-force a hash
+```
 
-SHA1
+You can also get help for a specific command:
 
-SHA256
+```bash
+python3 HashCrackBG.py generate -h
+```
 
-and other algorithms supported by Python hashlib
+```bash
+python3 HashCrackBG.py crack -h
+```
 
-Wordlist cracking
+```bash
+python3 HashCrackBG.py brute -h
+```
 
-Smart password mutations:
+---
 
-lowercase / uppercase variations
+## Usage
 
-mixed case
+### Generate hash
 
-numbers
+Generate a hash from a text:
 
-symbols
+```bash
+python3 HashCrackBG.py generate -t password123 -a md5
+```
 
-common password patterns
+The default algorithm is MD5, so `-a md5` can also be omitted:
 
-number interleaving
+```bash
+python3 HashCrackBG.py generate -t password123
+```
 
-Brute-force mode
+Other algorithms supported by Python hashlib can also be used:
 
-Speed display (hashes/sec)
+```bash
+python3 HashCrackBG.py generate -t password123 -a sha256
+```
 
-Progress statistics
+---
 
-Auto-save found passwords → found.txt
+### Crack hash
 
-Color terminal interface
+Crack a hash using a wordlist:
 
-Installation
+```bash
+python3 HashCrackBG.py crack -hsh HASH -w wordlist.txt -a md5
+```
 
-Clone the repo:
+Example:
 
-git clone https://github.com/Lu4katA777/HashCrackBG.git
-cd HashCrackBG
+```bash
+python3 HashCrackBG.py crack -hsh 249184d5a8efb213886762d1cc915253 -w wordlist.txt
+```
+
+The tool will test the words from the wordlist and automatically generate additional mutations.
+
+---
+
+## Wordlists
+
+HashCrackBG includes three wordlist levels:
+
+```text
+wordlists/
+├── low.txt
+├── medium.txt
+└── high.txt
+```
+
+### Low
+
+A smaller wordlist designed for quick tests.
+
+### Medium
+
+A larger wordlist containing more words and common password patterns.
+
+### High
+
+The largest wordlist containing a much larger number of candidates.
+
+You can also use your own wordlist:
+
+```bash
+python3 HashCrackBG.py crack -hsh HASH -w mywordlist.txt
+```
+
+---
+
+## Brute Force
+
+HashCrackBG also includes a brute-force mode.
+
+```bash
+python3 HashCrackBG.py brute -hsh HASH -a md5 -m 4
+```
+
+Options:
+
+```text
+-hsh    Target hash
+-a      Hash algorithm
+-m      Maximum password length
+```
+
+Example:
+
+```bash
+python3 HashCrackBG.py brute -hsh HASH -a md5 -m 5
+```
+
+The brute-force mode tests combinations from the configured character set.
+
+As password length increases, the number of possible combinations grows very quickly. Long randomly generated passwords may therefore take a very long time to test.
+
+---
+
+## Output
+
+If a password is found:
+
+```text
+[+] FOUND: password123
+[+] Base: password
+[+] Attempts: 247753972
+[+] Speed: 229016/s
+```
+
+The result is automatically saved to:
+
+```text
+found.txt
+```
